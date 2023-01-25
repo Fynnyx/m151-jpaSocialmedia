@@ -9,7 +9,11 @@ import ch.fwesterath.socialmedia.repository.PostRespository;
 import ch.fwesterath.socialmedia.repository.UserRepository;
 import ch.fwesterath.socialmedia.repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.NoSuchElementException;
 
 /**
  * ViewController
@@ -40,116 +44,210 @@ public class RestController {
 
 	@GetMapping("/users/{id}")
 	public User userById(@PathVariable("id") Long id) {
-		return userRepository.findById(id).get();
+		try {
+			return userRepository.findById(id).get();
+		} catch (NoSuchElementException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+		}
 	}
 
 	@PostMapping("/users")
 	public User userCreate(@RequestBody User user) {
-		return userRepository.save(user);
+		try {
+			return userRepository.save(user);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not created", e);
+		}
 	}
 
 	@PutMapping("/users/{id}")
 	public User userUpdate(@PathVariable("id") Long id, @RequestBody User user) {
-		User userToUpdate = userRepository.findById(id).get();
-		userToUpdate.setName(user.getName());
-		return userRepository.save(userToUpdate);
+		try {
+			User userToUpdate = userRepository.findById(id).get();
+			userToUpdate.setName(user.getName());
+			return userRepository.save(userToUpdate);
+		} catch (NoSuchElementException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not updated", e);
+		}
+
 	}
 
 	@DeleteMapping("/users/{id}")
 	public void userDelete(@PathVariable("id") Long id) {
-		userRepository.deleteById(id);
+		try {
+			userRepository.deleteById(id);
+		} catch (NoSuchElementException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not deleted", e);
+		}
 	}
 
 	// Return all posts
 	@GetMapping("/posts")
 	public Iterable<Post> postAll() {
-		return postRespository.findAll();
+		try {
+			return postRespository.findAll();
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Posts not found", e);
+		}
 	}
+
 
 	@GetMapping("/posts/{id}")
 	public Post postById(@PathVariable("id") Long id) {
-		return postRespository.findById(id).get();
-	}
+		try {
+			return postRespository.findById(id).get();
+		} catch (NoSuchElementException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found");
+		}
+}
 
 	@PostMapping("/posts")
 	public Post postCreate(@RequestBody Post post) {
-		return postRespository.save(post);
+		try {
+			return postRespository.save(post);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post not created", e);
+		}
 	}
 
 	@PutMapping("/posts/{id}")
 	public Post postUpdate(@PathVariable("id") Long id, @RequestBody Post post) {
-		Post postToUpdate = postRespository.findById(id).get();
-		postToUpdate.setCaption(post.getCaption());
-		postToUpdate.setTopic(post.getTopic());
-		postToUpdate.setUser(post.getUser());
-		return postRespository.save(postToUpdate);
+		try {
+			Post postToUpdate = postRespository.findById(id).get();
+			postToUpdate.setCaption(post.getCaption());
+			postToUpdate.setTopic(post.getTopic());
+			postToUpdate.setUser(post.getUser());
+			return postRespository.save(postToUpdate);
+		} catch (NoSuchElementException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found");
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post not updated", e);
+		}
 	}
 
 	@DeleteMapping("/posts/{id}")
 	public void postDelete(@PathVariable("id") Long id) {
-		postRespository.deleteById(id);
+		try {
+			postRespository.deleteById(id);
+		} catch (NoSuchElementException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found");
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post not deleted", e);
+		}
 	}
 
 	// Return all votes
 	@GetMapping("/votes")
 	public Iterable<Vote> voteAll() {
-		return voteRepository.findAll();
+		try {
+			return voteRepository.findAll();
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Votes not found", e);
+		}
 	}
 
 	@GetMapping("/votes/{id}")
 	public Vote voteById(@PathVariable("id") Long id) {
-		return voteRepository.findById(id).get();
+		try {
+			return voteRepository.findById(id).get();
+		} catch (NoSuchElementException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Vote not found");
+		}
 	}
 
 	@PostMapping("/votes")
 	public Vote voteCreate(@RequestBody Vote vote) {
-		return voteRepository.save(vote);
+		try {
+			return voteRepository.save(vote);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Vote not created", e);
+		}
 	}
 
 	@PutMapping("/votes/{id}")
 	public Vote voteUpdate() {
-		Vote voteToUpdate = voteRepository.findById(1L).get();
-		voteToUpdate.setPost(voteToUpdate.getPost());
-		voteToUpdate.setUser(voteToUpdate.getUser());
-		voteToUpdate.setTimestamp(voteToUpdate.getTimestamp());
-		voteToUpdate.setUpvote(voteToUpdate.isUpvote());
-		return voteRepository.save(voteToUpdate);
+		try {
+			Vote voteToUpdate = voteRepository.findById(1L).get();
+			voteToUpdate.setPost(voteToUpdate.getPost());
+			voteToUpdate.setUser(voteToUpdate.getUser());
+			voteToUpdate.setTimestamp(voteToUpdate.getTimestamp());
+			voteToUpdate.setUpvote(voteToUpdate.isUpvote());
+			return voteRepository.save(voteToUpdate);
+		} catch (NoSuchElementException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Vote not found");
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Vote not updated", e);
+		}
 	}
 
 	@DeleteMapping("/votes/{id}")
 	public void voteDelete(@PathVariable("id") Long id) {
-		voteRepository.deleteById(id);
+		try {
+			voteRepository.deleteById(id);
+		} catch (NoSuchElementException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Vote not found");
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Vote not deleted", e);
+		}
 	}
 
 	// Return all comments
 	@GetMapping("/comments")
 	public Iterable<Comment> commentAll() {
-		return commentRepository.findAll();
+		try {
+			return commentRepository.findAll();
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comments not found", e);
+		}
 	}
 
 	@GetMapping("/comments/{id}")
 	public Comment commentById(@PathVariable("id") Long id) {
-		return commentRepository.findById(id).get();
+		try {
+			return commentRepository.findById(id).get();
+		} catch (NoSuchElementException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment not found");
+		}
 	}
 
 	@PostMapping("/comments")
 	public Comment commentCreate(@RequestBody Comment comment) {
-		return commentRepository.save(comment);
+		try {
+			return commentRepository.save(comment);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comment not created", e);
+		}
 	}
 
 	@PutMapping("/comments/{id}")
 	public Comment commentUpdate(@PathVariable("id") Long id, @RequestBody Comment comment) {
-		Comment commentToUpdate = commentRepository.findById(id).get();
-		commentToUpdate.setPost(comment.getPost());
-		commentToUpdate.setUser(comment.getUser());
-		commentToUpdate.setDownvotes(comment.getDownvotes());
-		commentToUpdate.setUpvotes(comment.getUpvotes());
-		commentToUpdate.setText(comment.getText());
-		return commentRepository.save(commentToUpdate);
+		try {
+			Comment commentToUpdate = commentRepository.findById(id).get();
+			commentToUpdate.setPost(comment.getPost());
+			commentToUpdate.setUser(comment.getUser());
+			commentToUpdate.setDownvotes(comment.getDownvotes());
+			commentToUpdate.setUpvotes(comment.getUpvotes());
+			commentToUpdate.setText(comment.getText());
+			return commentRepository.save(commentToUpdate);
+		} catch (NoSuchElementException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment not found");
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comment not updated", e);
+		}
 	}
 
 	@DeleteMapping("/comments/{id}")
 	public void commentDelete(@PathVariable("id") Long id) {
-		commentRepository.deleteById(id);
+		try {
+			commentRepository.deleteById(id);
+		} catch (NoSuchElementException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment not found");
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comment not deleted", e);
+		}
 	}
 }
