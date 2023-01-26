@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.SQLException;
 import java.util.NoSuchElementException;
 
 /**
@@ -56,8 +57,8 @@ public class RestController {
 	public User userCreate(@RequestBody User user) {
 		try {
 			return userRepository.save(user);
-		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not created", e);
+		} catch (Exception Exception) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not created");
 		}
 	}
 
@@ -70,7 +71,7 @@ public class RestController {
 		} catch (NoSuchElementException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not updated", e);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not updated");
 		}
 
 	}
@@ -82,7 +83,7 @@ public class RestController {
 		} catch (NoSuchElementException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not deleted", e);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not deleted");
 		}
 	}
 
@@ -92,7 +93,7 @@ public class RestController {
 		try {
 			return postRespository.findAll();
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Posts not found", e);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Posts not found");
 		}
 	}
 
@@ -111,7 +112,7 @@ public class RestController {
 		try {
 			return postRespository.save(post);
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post not created", e);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post not created");
 		}
 	}
 
@@ -126,7 +127,7 @@ public class RestController {
 		} catch (NoSuchElementException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found");
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post not updated", e);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post not updated");
 		}
 	}
 
@@ -137,7 +138,7 @@ public class RestController {
 		} catch (NoSuchElementException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found");
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post not deleted", e);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post not deleted");
 		}
 	}
 
@@ -147,7 +148,7 @@ public class RestController {
 		try {
 			return voteRepository.findAll();
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Votes not found", e);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Votes not found");
 		}
 	}
 
@@ -165,7 +166,7 @@ public class RestController {
 		try {
 			return voteRepository.save(vote);
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Vote not created", e);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Vote not created");
 		}
 	}
 
@@ -181,7 +182,7 @@ public class RestController {
 		} catch (NoSuchElementException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Vote not found");
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Vote not updated", e);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Vote not updated");
 		}
 	}
 
@@ -192,7 +193,7 @@ public class RestController {
 		} catch (NoSuchElementException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Vote not found");
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Vote not deleted", e);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Vote not deleted");
 		}
 	}
 
@@ -202,7 +203,7 @@ public class RestController {
 		try {
 			return commentRepository.findAll();
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comments not found", e);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comments not found");
 		}
 	}
 
@@ -220,7 +221,7 @@ public class RestController {
 		try {
 			return commentRepository.save(comment);
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comment not created", e);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comment not created");
 		}
 	}
 
@@ -237,7 +238,7 @@ public class RestController {
 		} catch (NoSuchElementException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment not found");
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comment not updated", e);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comment not updated");
 		}
 	}
 
@@ -248,7 +249,7 @@ public class RestController {
 		} catch (NoSuchElementException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment not found");
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comment not deleted", e);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comment not deleted");
 		}
 	}
 
@@ -257,7 +258,7 @@ public class RestController {
 		try {
 			return adressRepository.findAll();
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Adresses not found", e);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Adresses not found");
 		}
 	}
 
@@ -275,7 +276,7 @@ public class RestController {
 		try {
 			return adressRepository.save(adress);
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Adress not created", e);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Adress not created");
 		}
 	}
 
@@ -292,7 +293,7 @@ public class RestController {
 		} catch (NoSuchElementException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Adress not found");
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Adress not updated", e);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Adress not updated");
 		}
 	}
 
@@ -303,7 +304,7 @@ public class RestController {
 		} catch (NoSuchElementException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Adress not found");
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Adress not deleted", e);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Adress not deleted");
 		}
 	}
 
