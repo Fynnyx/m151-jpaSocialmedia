@@ -2,10 +2,12 @@ DROP TABLE IF EXISTS comment;
 DROP TABLE IF EXISTS vote;
 DROP TABLE IF EXISTS post;
 DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS adress;
 
 CREATE TABLE `user` (
     id INT NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
+    adress_id INT UNIQUE NOT NULL ,
     PRIMARY KEY (id)
 );
 CREATE TABLE post (
@@ -37,7 +39,17 @@ CREATE TABLE comment (
     FOREIGN KEY (user_id) REFERENCES `user`(id),
     FOREIGN KEY (post_id) REFERENCES post(id)
 );
+CREATE TABLE adress (
+    id INT NOT NULL AUTO_INCREMENT,
+    street VARCHAR(255) NOT NULL,
+    city VARCHAR(255) NOT NULL,
+    zip INT NOT NULL,
+    country VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+);
 
 -- Inserts
-INSERT INTO `user` (`name`) VALUES ('John');
-INSERT INTO `user` (`name`) VALUES ('Jane');
+INSERT INTO adress (street, city, zip, country) VALUES ('Main Street', 'New York', 12345, 'USA');
+INSERT INTO adress (street, city, zip, country) VALUES ('Schlierenstrasse', 'Ennetbaden', 5408, 'Switzerland');
+INSERT INTO `user` (`name`, adress_id) VALUES ('John', 1);
+INSERT INTO `user` (`name`, adress_id) VALUES ('Jane', 2);

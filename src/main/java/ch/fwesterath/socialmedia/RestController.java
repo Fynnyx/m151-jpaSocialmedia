@@ -4,10 +4,8 @@ import ch.fwesterath.socialmedia.model.Comment;
 import ch.fwesterath.socialmedia.model.Post;
 import ch.fwesterath.socialmedia.model.User;
 import ch.fwesterath.socialmedia.model.Vote;
-import ch.fwesterath.socialmedia.repository.CommentRepository;
-import ch.fwesterath.socialmedia.repository.PostRespository;
-import ch.fwesterath.socialmedia.repository.UserRepository;
-import ch.fwesterath.socialmedia.repository.VoteRepository;
+import ch.fwesterath.socialmedia.model.UserAdress;
+import ch.fwesterath.socialmedia.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +32,9 @@ public class RestController {
 
 	@Autowired
 	private CommentRepository commentRepository;
+
+	@Autowired
+	private AdressRepository adressRepository;
 
 	// API endpoints
 	// Return all users
@@ -250,4 +251,61 @@ public class RestController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comment not deleted", e);
 		}
 	}
+
+	@GetMapping("/adress")
+	public Iterable<UserAdress> adressAll() {
+		try {
+			return adressRepository.findAll();
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Adresses not found", e);
+		}
+	}
+
+	@GetMapping("/adress/{id}")
+	public UserAdress adressById(@PathVariable("id") Long id) {
+		try {
+			return adressRepository.findById(id).get();
+		} catch (NoSuchElementException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Adress not found");
+		}
+	}
+
+	@PostMapping("/adress")
+	public UserAdress adressCreate(@RequestBody UserAdress adress) {
+		try {
+			return adressRepository.save(adress);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Adress not created", e);
+		}
+	}
+
+	@PutMapping("/adress/{id}")
+	public UserAdress adressUpdate(@PathVariable("id") Long id, @RequestBody UserAdress adress) {
+		try {
+			UserAdress adressToUpdate = adressRepository.findById(id).get();
+			adressToUpdate.setCity(adress.getCity());
+			adressToUpdate.setCountry(adress.getCountry());
+			adressToUpdate.setStreet(adress.getStreet());
+			adressToUpdate.setZip(adress.getZip());
+			adressToUpdate.setUser(adress.getUser());
+			return adressRepository.save(adressToUpdate);
+		} catch (NoSuchElementException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Adress not found");
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Adress not updated", e);
+		}
+	}
+
+	@DeleteMapping("/adress/{id}")
+	public void adressDelete(@PathVariable("id") Long id) {
+		try {
+			adressRepository.deleteById(id);
+		} catch (NoSuchElementException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Adress not found");
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Adress not deleted", e);
+		}
+	}
+
+
 }
