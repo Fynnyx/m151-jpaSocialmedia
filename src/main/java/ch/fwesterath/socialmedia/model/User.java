@@ -1,6 +1,5 @@
 package ch.fwesterath.socialmedia.model;
 
-
 import javax.persistence.*;
 
 @Entity
@@ -15,6 +14,9 @@ public class User {
 
     @Column(name = "name")
     private String name;
+
+    @OneToOne
+    private UserAdress adress;
 
     public User() {
     }
@@ -33,6 +35,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public UserAdress getAdress() {
+        return adress;
+    }
+
+    public void setAdress(UserAdress adress) {
+        this.adress = adress;
     }
 
     @Override
